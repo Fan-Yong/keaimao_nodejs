@@ -8,10 +8,11 @@ var hei="▲"
 hei="[红包]"
 var kongwei="□";//棋盘上没有放子的位置
 kongwei="[咖啡]";
+var red="[猪头]";
 
 var sp="";
-var cols=7;
-var rows=6;
+var cols=10;
+var rows=10;
 var n_num=4;
 
 var duiyizhe="";//为机器人找到聊天对象
@@ -117,8 +118,11 @@ function getmsg(data){
 	}else{
 		if(user==hei) 
 			user=bai; 
-		else
-			user=hei;  
+		else if(user==bai){
+			user=red
+		}else{
+			user=hei
+		}	  
 		reply(obj,initwzq(pos)+"\n"+user+"...[疑问]... (上步棋:"+a1+"列:"+a0+"行)");
 	}	
  
@@ -163,8 +167,8 @@ function initwzq(pos){
 	}	
 	let wzq=""; 
  
-	col1="--1--2--3--4---5-- 6--7";
-	col2="1--2-3--4-5--6-7";
+	col1="--1--2--3--4---5-- 6--7---8--9--10";
+	col2="1--2-3--4-5--6-7--8--9--10";
 	for (let  i= rows-1;i>=0;i--){   
 		for (let j=0;j<cols;j++){			
 			arr[i]= arr[i]+pos[i+1][j+1];
