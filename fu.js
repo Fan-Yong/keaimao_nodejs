@@ -50,24 +50,26 @@ server.listen(port, hostname, () => {
 
 //去图灵机器人请求信息，返回后通过可爱猫回复（reply）
 function getmsg(data){
-	
+	 
 	
 	if(data.msg=="换人"  && data.final_from_wxid==data.robot_wxid){
 		duiyizhe="";
 		console.log("*********解绑聊天对象*********************");
 		return;
 	}	
+	 
 	if(duiyizhe=="" && data.final_from_wxid!=data.robot_wxid){
-		 duiyizhe=data.final_from_wxid;
-		 console.log("***************绑定的聊天对象："+data.from_name);
+		 duiyizhe=data.from_wxid;
+		 console.log("***************绑定的聊天对象："+data.from_name+":"+data.from_wxid);
 		  
 	}	
+	 
 	
 	if(duiyizhe!="" && data.final_from_wxid==data.robot_wxid){
 		data.from_wxid=duiyizhe;
 	}	
 	
-	 
+	  
 	if(data.msg=="下棋"||data.msg=="开始"||data.msg=="123"){		
    pos=initpos();
    user=hei;	   
@@ -302,8 +304,7 @@ function isCanReply(obj){
 	//console.log(obj.final_from_name+"----------------")
 	if(obj.type==99999) return false;
 	
-	if((obj.final_from_name).indexOf("绿萝")>-1 && obj.type==100) 		return true;
-	if((obj.final_from_name).indexOf("高枕")>-1 && obj.type==100) 		return true;
+	if((obj.final_from_name).indexOf("绿萝")>-1 && obj.type==100) 		return true;	
 	if((obj.final_from_name).indexOf("家润")>-1 && obj.type==100)    	return true;
 	if((obj.final_from_name).indexOf("猫先生")>-1 && obj.type==100)   return true;
 	if((obj.final_from_name).indexOf("李书江")>-1 && obj.type==100)   return true;	
@@ -311,7 +312,7 @@ function isCanReply(obj){
 	if((obj.from_name).indexOf("wuziqi")>-1  )  return true;	
 	if((obj.from_name).indexOf("8人制")>-1  )  return true;	
 	if((obj.from_name).indexOf("862")>-1  )  return true;	
-	 
+	if((obj.final_from_name).indexOf("高枕")>-1) 		return true; 
 	return false;	
 	
 }
