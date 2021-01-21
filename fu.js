@@ -14,6 +14,8 @@ var cols=7;
 var rows=6;
 var n_num=4;
 
+var duiyizhe="";//为机器人找到聊天对象
+
 
 //request 模块需要另外安装
 var request = require('request');
@@ -48,6 +50,23 @@ server.listen(port, hostname, () => {
 
 //去图灵机器人请求信息，返回后通过可爱猫回复（reply）
 function getmsg(data){
+	
+	
+	if(data.msg=="换人"  && data.final_from_wxid==data.robot_wxid){
+		duiyizhe="";
+		console.log("*********解绑聊天对象*********************");
+		return;
+	}	
+	if(duiyizhe=="" && data.final_from_wxid!=data.robot_wxid){
+		 duiyizhe=data.final_from_wxid;
+		 console.log("***************绑定的聊天对象："+data.from_name);
+		  
+	}	
+	
+	if(duiyizhe!="" && data.final_from_wxid==data.robot_wxid){
+		data.from_wxid=duiyizhe;
+	}	
+	
 	 
 	if(data.msg=="下棋"||data.msg=="开始"||data.msg=="123"){		
    pos=initpos();
@@ -106,11 +125,11 @@ function getmsg(data){
 }	
 
 //回复微信用户消息
-var duiyizhe="";
+
 function reply(obj,rmsg){ 
 	console.log("reply................");
-	//if(duiyizhe=="" && obj.final_from_wxid!="fanjiarun") duiyizhe=obj.final_from_wxid;
-	//if(duiyizhe!="") obj.from_wxid=duiyizhe;
+ 
+
 	var url="http://127.0.0.1:8073/send";	
 	rmsg=encodeURI(rmsg);
 	//obj.from_wxid="wxid_03u637srca7p12";
@@ -142,15 +161,15 @@ function initwzq(pos){
 	}	
 	let wzq=""; 
  
-	col1="-1--2--3--4--5-- 6--7";
-	
+	col1="--1--2--3--4---5-- 6--7";
+	col2="1--2-3--4-5--6-7";
 	for (let  i= rows-1;i>=0;i--){   
 		for (let j=0;j<cols;j++){			
 			arr[i]= arr[i]+pos[i+1][j+1];
 		}	
 		wzq=wzq+ arr[i]+"--"+(i+1)+"\n";
 	}	 
-	wzq=col1+"\n"+wzq ;	
+	wzq=col1+"\n"+wzq +col2+"\n";	
 	return wzq;
 	 
 }	
@@ -283,15 +302,16 @@ function isCanReply(obj){
 	//console.log(obj.final_from_name+"----------------")
 	if(obj.type==99999) return false;
 	
-	/*if((obj.final_from_name).indexOf("绿萝")>-1 && obj.type==100) 		return true;
+	if((obj.final_from_name).indexOf("绿萝")>-1 && obj.type==100) 		return true;
 	if((obj.final_from_name).indexOf("高枕")>-1 && obj.type==100) 		return true;
 	if((obj.final_from_name).indexOf("家润")>-1 && obj.type==100)    	return true;
 	if((obj.final_from_name).indexOf("猫先生")>-1 && obj.type==100)   return true;
 	if((obj.final_from_name).indexOf("李书江")>-1 && obj.type==100)   return true;	
-	if((obj.final_from_name).indexOf("永飞")>-1)   return true;		*/	
+	if((obj.final_from_name).indexOf("永飞")>-1)   return true;		 
 	if((obj.from_name).indexOf("wuziqi")>-1  )  return true;	
 	if((obj.from_name).indexOf("8人制")>-1  )  return true;	
-	if((obj.from_name).indexOf("862")>-1  )  return true;			
+	if((obj.from_name).indexOf("862")>-1  )  return true;	
+	 
 	return false;	
 	
 }
