@@ -55,15 +55,17 @@ server.listen(port, hostname, () => {
 function getmsg(data){
 	 
 	
-	if(data.msg=="换人"  && data.final_from_wxid==data.robot_wxid){
+	if((data.msg=="换人" || data.msg=="解绑") && data.final_from_wxid==data.robot_wxid){
 		duiyizhe="";
 		console.log("*********解绑聊天对象*********************");
+		replyself(data,"解绑成功");
 		return;
 	}	
 	 
 	if(duiyizhe=="" && data.final_from_wxid!=data.robot_wxid){
 		 duiyizhe=data.from_wxid;
 		 console.log("***************绑定的聊天对象："+data.from_name+":"+data.from_wxid);
+		 replyself(data,"绑定的聊天对象："+data.from_name+":"+data.from_wxid);
 		  
 	}	
 	if(duiyizhe!="" && data.final_from_wxid!=data.robot_wxid && data.from_wxid!=duiyizhe){
@@ -127,7 +129,7 @@ function getmsg(data){
 			user=bai; 
 		else
 			user=hei;  
-		reply(obj,initwzq(pos)+"\n上一步"+obj.final_from_name+":("+a1+"列:"+a0+"行)\n"+user+"思考中... ");
+		reply(obj,initwzq(pos)+"\n上一步"+obj.final_from_name+"("+a1+"列)\n"+user+"思考中... ");
 	}	
  
 	
@@ -152,6 +154,24 @@ function reply(obj,rmsg){
 	})
 }
 
+
+function replyself(obj,rmsg){ 
+	console.log("reply................");
+
+	var url="http://127.0.0.1:8073/send";	
+	rmsg=encodeURI(rmsg);
+	//obj.from_wxid="wxid_03u637srca7p12";
+	var requestData="{\"type\":100,\"msg\":\""+rmsg+"\",\"to_wxid\":\""+obj.robot_wxid+"\",\"robot_wxid\":\""+obj.robot_wxid+"\"}";	
+
+	request.post({url:url, form: requestData}, function(error, response, body) {
+	  if (!error &&  response.statusCode == 200) {
+	     console.log(body) // 请求成功的处理逻辑  
+	  }
+	})
+}
+
+
+
 function getUrlVars(url) {
     var hash;
     var myJson = {};
@@ -171,7 +191,7 @@ function initwzq(pos){
 	}	
 	let wzq=""; 
  
-	col1="--1--2---3---4---5---6--7";
+	col1="--1--2--3---4---5---6--7";
 	col2="1--2-3--4-5--6-7";
 	for (let  i= rows-1;i>=0;i--){   
 		for (let j=0;j<cols;j++){			
