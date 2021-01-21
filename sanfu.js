@@ -11,8 +11,8 @@ kongwei="[咖啡]";
 var red="[猪头]";
 
 var sp="";
-var cols=10;
-var rows=10;
+var cols=9;
+var rows=9;
 var n_num=4;
 
 var duiyizhe="";//为机器人找到聊天对象
@@ -170,8 +170,8 @@ function initwzq(pos){
 	}	
 	let wzq=""; 
  
-	col1="--1--2--3--4---5-- 6--7---8--9--10";
-	col2="1--2-3--4-5--6-7--8--9--10";
+	col1="--1--2--3--4---5-- 6--7---8--9";
+	col2="1--2-3--4-5--6-7--8--9";
 	for (let  i= rows-1;i>=0;i--){   
 		for (let j=0;j<cols;j++){			
 			arr[i]= arr[i]+pos[i+1][j+1];
@@ -313,12 +313,13 @@ function isCanReply(obj){
 	
 	if((obj.final_from_name).indexOf("绿萝")>-1 && obj.type==100) 		return true;	
 	if((obj.final_from_name).indexOf("家润")>-1 && obj.type==100)    	return true;
-	if((obj.final_from_name).indexOf("猫先生")>-1 && obj.type==100)   return true;
-	if((obj.final_from_name).indexOf("李书江")>-1 && obj.type==100)   return true;	
-	if((obj.final_from_name).indexOf("永飞")>-1)   return true;		 
+	if((obj.final_from_name).indexOf("帆船")>-1 && obj.type==100)    	return true;
+	//if((obj.final_from_name).indexOf("猫先生")>-1 && obj.type==100)   return true;
+	//if((obj.final_from_name).indexOf("李书江")>-1 && obj.type==100)   return true;	
+	//if((obj.final_from_name).indexOf("永飞")>-1)   return true;		 
 	if((obj.from_name).indexOf("wuziqi")>-1  )  return true;	
-	if((obj.from_name).indexOf("8人制")>-1  )  return true;	
-	if((obj.from_name).indexOf("862")>-1  )  return true;	
+	//if((obj.from_name).indexOf("8人制")>-1  )  return true;	
+	//if((obj.from_name).indexOf("862")>-1  )  return true;	
 	if((obj.final_from_name).indexOf("高枕")>-1) 		return true; 
 	return false;	
 	

@@ -127,7 +127,7 @@ function getmsg(data){
 			user=bai; 
 		else
 			user=hei;  
-		reply(obj,initwzq(pos)+"\n"+user+"...[疑问]... (上步棋:"+a1+"列:"+a0+"行)");
+		reply(obj,initwzq(pos)+"\n上一步"+obj.final_from_name+":("+a1+"列:"+a0+"行)\n"+user+"思考中... ");
 	}	
  
 	
@@ -171,7 +171,7 @@ function initwzq(pos){
 	}	
 	let wzq=""; 
  
-	col1="--1--2--3--4---5-- 6--7";
+	col1="--1--2---3---4---5---6--7";
 	col2="1--2-3--4-5--6-7";
 	for (let  i= rows-1;i>=0;i--){   
 		for (let j=0;j<cols;j++){			
@@ -311,15 +311,16 @@ function  isVectory( row, col,chess){
 function isCanReply(obj){
 	//console.log(obj.final_from_name+"----------------")
 	if(obj.type==99999) return false;
-	
+	if((obj.final_from_name).indexOf("林业子")>-1 && obj.type==100) 		return true;	
 	if((obj.final_from_name).indexOf("绿萝")>-1 && obj.type==100) 		return true;	
 	if((obj.final_from_name).indexOf("家润")>-1 && obj.type==100)    	return true;
-	if((obj.final_from_name).indexOf("猫先生")>-1 && obj.type==100)   return true;
-	if((obj.final_from_name).indexOf("李书江")>-1 && obj.type==100)   return true;	
-	if((obj.final_from_name).indexOf("永飞")>-1)   return true;		 
+	if((obj.final_from_name).indexOf("帆船")>-1 && obj.type==100)    	return true;
+	//if((obj.final_from_name).indexOf("猫先生")>-1 && obj.type==100)   return true;
+	//if((obj.final_from_name).indexOf("李书江")>-1 && obj.type==100)   return true;	
+	//if((obj.final_from_name).indexOf("永飞")>-1)   return true;		 
 	if((obj.from_name).indexOf("wuziqi")>-1  )  return true;	
 	if((obj.from_name).indexOf("8人制")>-1  )  return true;	
-	if((obj.from_name).indexOf("862")>-1  )  return true;	
+	//if((obj.from_name).indexOf("862")>-1  )  return true;	
 	if((obj.final_from_name).indexOf("高枕")>-1) 		return true; 
 	return false;	
 	
