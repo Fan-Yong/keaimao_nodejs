@@ -14,7 +14,10 @@ var cols=7;
 var rows=6;
 var n_num=4;
 
+
+
 var duiyizhe="";//为机器人找到聊天对象
+
 
 
 //request 模块需要另外安装
@@ -63,6 +66,11 @@ function getmsg(data){
 		 console.log("***************绑定的聊天对象："+data.from_name+":"+data.from_wxid);
 		  
 	}	
+	if(duiyizhe!="" && data.final_from_wxid!=data.robot_wxid && data.from_wxid!=duiyizhe){
+		 console.log("*********其他对弈者，返回*************");
+		 return;		
+	}	
+	
 	 
 	
 	if(duiyizhe!="" && data.final_from_wxid==data.robot_wxid){

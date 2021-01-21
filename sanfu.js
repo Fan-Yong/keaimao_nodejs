@@ -64,7 +64,10 @@ function getmsg(data){
 		 console.log("***************绑定的聊天对象："+data.from_name+":"+data.from_wxid);
 		  
 	}	
-	 
+	if(duiyizhe!="" && data.final_from_wxid!=data.robot_wxid && data.from_wxid!=duiyizhe){
+		 console.log("*********其他对弈者，返回*************");
+		 return;		
+	}
 	
 	if(duiyizhe!="" && data.final_from_wxid==data.robot_wxid){
 		data.from_wxid=duiyizhe;
