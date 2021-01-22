@@ -15,7 +15,7 @@ var rows=6;
 var n_num=4;
 
 
-
+var n_col=["①","②","③","④","⑤","⑥"];
 var duiyizhe="";//为机器人找到聊天对象
 
 
@@ -31,7 +31,7 @@ const server = http.createServer((req, res) => {
     req.on('end', () => {
     		 try{ 	  
     	  	obj=getUrlVars(decodeURIComponent(data))    	  	  	 
-    	  	console.log(decodeURIComponent(data))
+    	  	//console.log(decodeURIComponent(data))
     	  }catch(e){
     	  	obj={"type":99999}
     	  	 console.log('---------解析失败');
@@ -53,8 +53,9 @@ server.listen(port, hostname, () => {
 
 //去图灵机器人请求信息，返回后通过可爱猫回复（reply）
 function getmsg(data){
-	 
-	
+	//console.log("-------------------------");
+	 console.log(data.msg);
+	//console.log("-------------------------");
 	if((data.msg=="换人" || data.msg=="解绑") && data.final_from_wxid==data.robot_wxid){
 		duiyizhe="";
 		console.log("*********解绑聊天对象*********************");
@@ -129,7 +130,8 @@ function getmsg(data){
 			user=bai; 
 		else
 			user=hei;  
-		reply(obj,initwzq(pos)+"\n上一步"+obj.final_from_name+"("+a1+"列)\n"+user+"思考中... ");
+		//replypic(obj,"d:/node/code/1.gif"); 		
+		reply(obj,initwzq(pos)+"\n上一步:"+obj.final_from_name+"("+n_col[a1-1]+"列)\n"+user+"思考中... ");
 	}	
  
 	
@@ -146,6 +148,22 @@ function reply(obj,rmsg){
 	rmsg=encodeURI(rmsg);
 	//obj.from_wxid="wxid_03u637srca7p12";
 	var requestData="{\"type\":100,\"msg\":\""+rmsg+"\",\"to_wxid\":\""+obj.from_wxid+"\",\"robot_wxid\":\""+obj.robot_wxid+"\"}";	
+
+	request.post({url:url, form: requestData}, function(error, response, body) {
+	  if (!error &&  response.statusCode == 200) {
+	     console.log(body) // 请求成功的处理逻辑  
+	  }
+	})
+}
+
+function replypic(obj,rmsg){ 
+	console.log("reply................");
+ 
+
+	var url="http://127.0.0.1:8073/send";	
+	rmsg=encodeURI(rmsg);
+	//obj.from_wxid="wxid_03u637srca7p12";
+	var requestData="{\"type\":103,\"msg\":\""+rmsg+"\",\"to_wxid\":\""+obj.from_wxid+"\",\"robot_wxid\":\""+obj.robot_wxid+"\"}";	
 
 	request.post({url:url, form: requestData}, function(error, response, body) {
 	  if (!error &&  response.statusCode == 200) {
@@ -191,15 +209,22 @@ function initwzq(pos){
 	}	
 	let wzq=""; 
  
-	col1="--1--2--3---4---5---6--7";
-	col2="1--2-3--4-5--6-7";
+	//col1="--1--2--3---4---5---6--7";
+	
+	//col2="1--2-3--4-5--6-7";
+	
+	col1=" ① ② ③ ④ ⑤ ⑥ ⑦";
+	col2=" ① ② ③ ④ ⑤ ⑥ ⑦";
+	
+	
+	
 	for (let  i= rows-1;i>=0;i--){   
 		for (let j=0;j<cols;j++){			
 			arr[i]= arr[i]+pos[i+1][j+1];
 		}	
-		wzq=wzq+ arr[i]+"--"+(i+1)+"\n";
+		wzq=wzq+ arr[i]+" "+n_col[i]+"\n";
 	}	 
-	wzq=col1+"\n"+wzq +col2+"\n";	
+	wzq=col1+"\n"+wzq+col2+"\n";  
 	return wzq;
 	 
 }	
@@ -336,7 +361,7 @@ function isCanReply(obj){
 	if((obj.final_from_name).indexOf("家润")>-1 && obj.type==100)    	return true;
 	if((obj.final_from_name).indexOf("帆船")>-1 && obj.type==100)    	return true;
 	//if((obj.final_from_name).indexOf("猫先生")>-1 && obj.type==100)   return true;
-	//if((obj.final_from_name).indexOf("李书江")>-1 && obj.type==100)   return true;	
+	if((obj.final_from_name).indexOf("查")>-1 && obj.type==100)   return true;	
 	//if((obj.final_from_name).indexOf("永飞")>-1)   return true;		 
 	if((obj.from_name).indexOf("wuziqi")>-1  )  return true;	
 	if((obj.from_name).indexOf("8人制")>-1  )  return true;	
