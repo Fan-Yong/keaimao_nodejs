@@ -6,7 +6,6 @@ var bai="★"
 bai="[福]";
 var hei="▲" 
 hei="[红包]"
-var user;//当前持的黑棋或者白棋
 var kongwei="□";//棋盘上没有放子的位置
 kongwei="[咖啡]";
 
@@ -17,10 +16,7 @@ var n_num=4;
 
 
 var n_col=["①","②","③","④","⑤","⑥","⑦"];
-var duiyizhe="";//为机器人找到聊天对象(有可能为群)
-
-var heibai={'hei':'','bai':''};//黑白棋对弈者
-var course=[];//走棋过程记录
+var duiyizhe="";//为机器人找到聊天对象
 
 
 
@@ -71,7 +67,6 @@ function getmsg(data){
 		 duiyizhe=data.from_wxid;
 		 console.log("***************绑定的聊天对象："+data.from_name+":"+data.from_wxid);
 		 replyself(data,"绑定的聊天对象："+data.from_name+":"+data.from_wxid);
-		 return;
 		  
 	}	
 	if(duiyizhe!="" && data.final_from_wxid!=data.robot_wxid && data.from_wxid!=duiyizhe){
@@ -88,26 +83,11 @@ function getmsg(data){
 	  
 	if(data.msg=="下棋"||data.msg=="开始"||data.msg=="123"){		
    pos=initpos();
-   initbind();  
+   user=hei;	   
 	 initwzq(pos);	 
-	 reply(obj,"欢迎你参加游戏：四福连珠！请输入‘列号’开始走棋。\n\n"+initwzq(pos));
+	 reply(obj,"欢迎你参加游戏：四福连珠！（玩法介绍：https://baike.baidu.com/item/%E5%9B%9B%E5%AD%90%E6%A3%8B/6357076?fr=aladdin）请输入： 列号，棋子会落入对应列的茶碗。\n\n"+initwzq(pos));
 	 return;		
 	}	
-	if(data.msg=="000"){//悔棋
-		
-		if(course.pop()==hei){
-			user=bai
-		}else{
-			user=hei
-		}	
-		let t1=parseInt(course.pop());
-		let t2=parseInt(course.pop());
-		pos[t1][t2]=kongwei
-		reply(obj,obj.final_from_name+"悔棋一步\n\n"+initwzq(pos));
-	 	return;	
-		
-	}		
-	
 	
 	var reg = /^[0-9]+.?[0-9]*$/;
 	data.msg=data.msg.trim();	 
@@ -134,63 +114,24 @@ function getmsg(data){
 	}	
 	
 	if(a0==0){
-		//console.log("此列已满");
+		console.log("此列已满");
 		return ;
 		
 	}	
-   
- //---------------增加限制，只能某人走某棋
- 
-  if(heibai.hei=='' || heibai.bai==''){
-  
-	  if(heibai.hei==''){
-	  	console.log('--------------');
-	  	heibai.hei=data.final_from_name;	  	 
-	  }else{
-	  	if(heibai.hei!=data.final_from_name ){
-	  		heibai.bai=data.final_from_name;  		
-	  	}else{
-	  		//某人连续下棋
-	  		return;
-	  	}		
-	  }	
-	} else{		
-		if(user==hei && heibai.hei!=data.final_from_name){
-			return;
-		}	
-		if(user==bai && heibai.bai!=data.final_from_name){
-			return;
-		}	
-	}	
-	//---------------------------------------------
-	pos[a0][a1]=user; 
 	
-	course.push(a1.toString());
-	course.push(a0.toString());
-	course.push(user);
-	
-	console.log(a0.toString()+":"+a1.toString()+":"+user);
-	
-	//记录走棋过程,稍后做悔棋
-	let thinksuser="";
-
+	pos[a0][a1]=user;
 	
 	if(isVectory(parseInt(a0),parseInt(a1),pos)==1){
-		reply(obj,initwzq(pos)+"\n比赛结束!    "+user+" 胜！[呲牙][呲牙]/n[玫瑰][玫瑰][玫瑰][玫瑰][玫瑰]/n[玫瑰][玫瑰][玫瑰][玫瑰][玫瑰]");
-		initbind();
+		reply(obj,initwzq(pos)+"\n比赛结束!    "+user+" 胜！[呲牙][呲牙]");
 		pos=initpos();
-     
+    user=hei;	
 	}else{
-		if(user==hei){
-			user=bai;
-			thinksuser=heibai.bai; 
-		}	
-		else{
-			user=hei;
-			thinksuser=heibai.hei
-		}	  
+		if(user==hei) 
+			user=bai; 
+		else
+			user=hei;  
 		//replypic(obj,"d:/node/code/1.gif"); 		
-		reply(obj,initwzq(pos)+"\n上一步:"+obj.final_from_name+"("+n_col[a1-1]+"列)\n"+thinksuser+"-"+user+"思考中..");
+		reply(obj,initwzq(pos)+"\n上一步:"+obj.final_from_name+"("+n_col[a1-1]+"列)\n"+user+"思考中... ");
 	}	
  
 	
@@ -260,12 +201,6 @@ function getUrlVars(url) {
     return myJson;
 }
 
-function initbind(){
-	user=hei;	
-	heibai.bai='';
-	heibai.hei=''; 
-	
-}	
 
 function initwzq(pos){ 
 	let arr=[];	
