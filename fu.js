@@ -93,8 +93,8 @@ function getmsg(data){
 	 reply(obj,"欢迎你参加游戏：四福连珠！请输入‘列号’开始走棋。\n\n"+initwzq(pos));
 	 return;		
 	}	
-	if(data.msg=="000"){//悔棋
-		
+	if(data.msg=="000"){//悔棋		
+		if(course.length==0) return;		
 		if(course.pop()==hei){
 			user=bai
 		}else{
