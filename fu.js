@@ -90,12 +90,9 @@ function getmsg(data){
 	}	
 	
 	if(data.msg=="000"){//悔棋		
-		if(course.length==0) return;		
-		if(course.pop()==hei){
-			user=bai
-		}else{
-			user=hei
-		}	
+		if(course.length==0) return;
+		user=	course.pop();	
+		
 		let t1=parseInt(course.pop());
 		let t2=parseInt(course.pop());
 		pos[t1][t2]=kongwei
