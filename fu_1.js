@@ -17,7 +17,7 @@ var n_num=4;
 
 var n_col=["①","②","③","④","⑤","⑥","⑦"];
 var duiyizhe="";//为机器人找到聊天对象
-
+var course=[];//走棋过程记录
 
 
 //request 模块需要另外安装
@@ -85,9 +85,25 @@ function getmsg(data){
    pos=initpos();
    user=hei;	   
 	 initwzq(pos);	 
-	 reply(obj,"欢迎你参加游戏：四福连珠！（玩法介绍：https://baike.baidu.com/item/%E5%9B%9B%E5%AD%90%E6%A3%8B/6357076?fr=aladdin）请输入： 列号，棋子会落入对应列的茶碗。\n\n"+initwzq(pos));
+	 reply(obj,"欢迎你参加游戏：四福连珠！请输入列号开始游戏。\n\n"+initwzq(pos));
 	 return;		
 	}	
+	
+	if(data.msg=="000"){//悔棋		
+		if(course.length==0) return;		
+		if(course.pop()==hei){
+			user=bai
+		}else{
+			user=hei
+		}	
+		let t1=parseInt(course.pop());
+		let t2=parseInt(course.pop());
+		pos[t1][t2]=kongwei
+		reply(obj,obj.final_from_name+"悔棋一步\n\n"+initwzq(pos));
+	 	return;	
+		
+	}
+	
 	
 	var reg = /^[0-9]+.?[0-9]*$/;
 	data.msg=data.msg.trim();	 
@@ -120,6 +136,9 @@ function getmsg(data){
 	}	
 	
 	pos[a0][a1]=user;
+	course.push(a1.toString());
+	course.push(a0.toString());
+	course.push(user);
 	
 	if(isVectory(parseInt(a0),parseInt(a1),pos)==1){
 		reply(obj,initwzq(pos)+"\n比赛结束!    "+user+" 胜！[呲牙][呲牙]");
